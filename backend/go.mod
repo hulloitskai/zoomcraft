@@ -10,6 +10,7 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/getsentry/raven-go v0.2.0 // indirect
 	github.com/go-kit/kit v0.10.0
+	github.com/go-logfmt/logfmt v0.5.0
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/gorcon/rcon v1.0.0
 	github.com/joho/godotenv v1.3.0

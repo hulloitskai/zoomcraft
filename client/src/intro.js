@@ -98,7 +98,10 @@ const Intro = ({ socket, onSubmit }) => {
     setDisabled(true);
 
     // Check valid usernames.
-    const { data } = await client.query({ query: PLAYER_USERNAMES });
+    const { data } = await client.query({
+      query: PLAYER_USERNAMES,
+      fetchPolicy: "network-only",
+    });
     const usernames = data.players.map((p) => p.username);
     const { value: username } = input.current;
     if (!usernames.includes(username)) {

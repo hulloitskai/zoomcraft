@@ -16,5 +16,5 @@ func Log(logger log.Logger, format string, args ...interface{}) error {
 // Trace writes a log message describing a method trace.
 func Trace(logger log.Logger, method string, err error) error {
 	logger = WithError(logger, err)
-	return logger.Log(messageKey, fmt.Sprintf("Executed method: %s", method))
+	return logger.Log(messageKey, fmt.Sprintf("executed method: %s", method))
 }

@@ -41,7 +41,7 @@ func (svc *playerService) List(ctx context.Context) (_ []*Player, err error) {
 	}
 	{
 		l := log.With(svc.logger, "usernames", usernames)
-		logutil.Log(l, "Discovered %d players.", len(usernames))
+		logutil.Log(l, "discovered %d players", len(usernames))
 	}
 
 	players := make([]*Player, 0, len(usernames))

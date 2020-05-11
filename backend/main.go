@@ -25,7 +25,8 @@ func main() {
 		godotenv.Load()
 
 		// Create logger.
-		logger := log.NewJSONLogger(log.NewSyncWriter(os.Stdout))
+		logger := logutil.NewLogger(log.NewSyncWriter(os.Stdout))
+		logger = logutil.WithComponent(logger, "backend")
 		logger = level.NewInjector(logger, level.DebugValue())
 
 		// Create Minecraft client.
@@ -84,7 +85,7 @@ func main() {
 		{
 			l := log.With(logger, "port", port)
 			l = level.Info(l)
-			logutil.Log(l, "Listening for connections.")
+			logutil.Log(l, "listening for connections")
 		}
 		return server.ListenAndServe()
 	}(); err != nil {
