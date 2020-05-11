@@ -1,4 +1,4 @@
-// A majority of this file is stolen gracelessly from:
+// A majority of this code is stolen gracelessly from:
 // https://www.khanacademy.org/computing/computer-programming/programming-games-visualizations/programming-3d-shapes/a/rotating-3d-shapes
 //
 // I stole this because I do not have a basic understanding of university level

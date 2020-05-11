@@ -225,7 +225,7 @@ const Dashboard = ({ username, socket }) => {
     const [x1, y1, z1] = position1;
     const [x2, y2, z2] = position2;
     const [ay, ax] = orientation;
-    return rotate([x2 - x1, y2 - y1, z2 - z1], deg2rad(-ay), deg2rad(-ax));
+    return rotate([x1 - x2, y2 - y1, z2 - z1], deg2rad(-ay), deg2rad(-ax));
   };
 
   return (

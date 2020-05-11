@@ -146,7 +146,7 @@ func (svc *playerService) listUsernames() ([]string, error) {
 	if out == "" {
 		return nil, nil
 	}
-	return strings.Split(out, ","), nil
+	return strings.Split(out, ", "), nil
 }
 
 // ErrNotFound is returned when an entity could not be found.
