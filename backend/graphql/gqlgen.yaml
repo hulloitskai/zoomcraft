@@ -1,0 +1,16 @@
+schema: ./schema/*.graphql
+struct_tag: json
+skip_validation: true
+
+exec:
+  filename: exec_gen.go
+model:
+  filename: model_gen.go
+resolver:
+  layout: follow-schema
+  dir: .
+  package: graphql
+
+# TODO: Only autobind package graphql; all types should be declared there.
+autobind:
+  - go.stevenxie.me/covidcraft/backend/minecraft

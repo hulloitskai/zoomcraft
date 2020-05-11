@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    environment:
+      TX: America/Toronto
+      EULA: "true"
+      VERSION: latest
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: minecraft
+    ports:
+      - 25565:25565
+      - 25575:25575
+    volumes:
+      - ./minecraft/server.properties:/data/server.properties
+
+  covidcraft:
+    build: .
+    image: stevenxie/covidcraft:latest
+    depends_on:
+      - minecraft
+    environment:
+      RCON_ADDRESS: minecraft:25575
+    ports:
+      - 8080:8080
+    tty: true
+    stdin_open: true

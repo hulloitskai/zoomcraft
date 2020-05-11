@@ -1,54 +1,10 @@
-# == Repository ==
+/.githooks
+/.git-secret
 /.env*
-
-# Configs:
-/hydra.*
-
-
-# == Go ==
-coverage.out
-
-# Test binary, build with `go test -c`.
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE.
-*.out
-
-# Vendored packages.
-vendor/
-
-
-# == Git ==
-.githooks/
-.gitignore
-
-# git-secret:
-.gitsecret/
-*.secret
-
-
-# == Docker ==
-.dockerignore
-
-
-# == Miscellaneous ==
-.editorconfig
-README.md
-
-
-# == IDE ==
-# VSCode (keeping workspace configurations):
-.vscode/*
-
-# IntelliJ:
-.idea/
-
-
-# == System ==
-# macOS:
-.DS_Store
-.DS_Store?
-*.swp
-
-# Windows:
-Thumbs.db
+/backend/dist
+/backend/.env
+/client/build
+/client/node_modules
+/client/.env*
+/gateway/node_modules
+/gateway/.env*

@@ -1,0 +1,13 @@
+scalar Coordinates
+scalar Orientation
+
+type Player {
+  username: String!
+  position: Coordinates!
+  orientation: Orientation!
+}
+
+extend type Query {
+  players: [Player]!
+  player(username: String!): Player
+}

@@ -27,27 +27,3 @@ pids
 *.pid
 *.seed
 *.pid.lock
-
-
-# == IDE ==
-# VSCode (keeping workspace configurations):
-.vscode/*
-!.vscode/tasks.json
-!.vscode/extensions.json
-#!.vscode/settings.json
-#!.vscode/launch.json
-
-# IntelliJ:
-.idea/
-
-
-# == System ==
-# macOS:
-.DS_Store
-.DS_Store?
-*.swp
-
-# Windows:
-Thumbs.db
-.gitsecret/keys/random_seed
-!*.secret

@@ -1,31 +1,6 @@
 # == Repository ==
-/debug
-/cmd/**/debug
-
 # Configs and secrets:
 /.gitsecret/keys/random_seed
-/hydra.yaml
-
-# Compiled binaries:
-/dist/
-
-# == Go ==
-# Binaries for programs and plugins:
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-# Test binary, build with `go test -c`.
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE.
-*.out
-
-# Vendored packages.
-vendor/
-
 
 # == IDE ==
 # VSCode (keeping workspace configurations):

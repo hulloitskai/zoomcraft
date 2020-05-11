@@ -1,6 +1,9 @@
 {
   "name": "covidcraft-client",
-  "version": "0.1.0",
+  "description": "The CovidCraft front-end.",
+  "repository": "https://github.com/stevenxie/covidcraft",
+  "author": "Steven Xie <hello@stevenxie.me>",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -25,15 +28,20 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^3.0.0-beta.44",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "graphql": "^15.0.0",
+    "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-feather": "^2.0.8",
+    "react-scripts": "3.4.1",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "prettier": "^2.0.5"
