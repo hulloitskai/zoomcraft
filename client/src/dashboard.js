@@ -70,7 +70,7 @@ const Dashboard = ({ username, streams }) => {
 
   const { data, error } = useQuery(QUERY, {
     variables: { username: username },
-    pollInterval: 100,
+    pollInterval: window.ZOOMCRAFT_POLL_INTERVAL ?? 100,
   });
   if (error) console.error(`[dashboard] failed to load player data`, error);
   const players = keyBy(data?.players, "username");
@@ -186,7 +186,7 @@ class DashboardConnector extends Component {
         // Handle remote ICE candidates.
         conn.addEventListener("icecandidate", ({ candidate }) => {
           if (!candidate) return;
-          console.log(`[conn(${targetUsername})] received ICE candidate`);
+          console.log(`[conn(${targetUsername})] identified ICE candidate`);
           socket.emit("data", {
             recipient: targetUsername,
             payload: {
@@ -267,10 +267,8 @@ class DashboardConnector extends Component {
           [targetUsername]: stream,
           ...otherStreams
         } = this.state.streams;
-        if (stream) {
-          stream.getAudioTracks().forEach((track) => track.stop());
-          this.setState({ streams: otherStreams });
-        }
+        if (stream) stream.getAudioTracks().forEach((track) => track.stop());
+        this.setState({ streams: otherStreams });
 
         console.log(`[socket] deregistered '${targetUsername}'`);
       } catch (error) {
@@ -316,6 +314,8 @@ class DashboardConnector extends Component {
     try {
       const constraints = { audio: true, video: false };
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      stream.getAudioTracks().forEach((track) => {});
+
       this.setState(({ streams, ...otherState }) => ({
         streams: { [username]: stream, ...streams },
         ...otherState,

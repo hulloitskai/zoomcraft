@@ -2,7 +2,8 @@
 
 _Augmented reality voice conferencing, in Minecraft._
 
-[![Drone][drone-img]][drone]
+[![version][version-img]][version]
+[![drone][drone-img]][drone]
 
 > Working from home? Want to spice up your team meetings a bit?
 >
@@ -13,8 +14,9 @@ with real-time audio conferencing superpowers using
 [WebRTC](https://webrtc.org). It works with any Minecraft server with RCON
 capabilities (vanilla servers since 1.0.0).
 
-It uses Web Audio spatialization APIs to map the audio from other players to
-their in-game position, in order to create a realistic virtual presence.
+It uses [web audio spatialization APIs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Web_audio_spatialization_basics)
+to map the audio from other players to their in-game position, in order to
+create a realistic virtual presence.
 
 [Check out a screencast of `zoomcraft`'s 3D audio
 capabilties.](https://vimeo.com/417468259) _Use headphones! (or make sure your
@@ -39,7 +41,7 @@ speakers support stereo audio)._
 
 ### Caveats
 
-- Not all browser fully support the Web Audio spec. This service was developed
+- Not all browser fully support the web audio spec. This service was developed
   and tested on Chrome, so that is the recommended browser to use with
   `zoomcraft`.
 
@@ -54,21 +56,21 @@ speakers support stereo audio)._
 `zoomcraft` consists of three components: `backend`, `gateway`, and `client`:
 
 - [`backend`](./backend) is responsible for querying the Minecraft server for
-  world and player data using [RCON](https://wiki.vg/RCON). It serves a
-  [`GraphQL`](https://graphql.org/) API.
+  world and player data using [RCON](https://wiki.vg/RCON). It exposes this
+  information over a [`GraphQL`](https://graphql.org/) API.
 - [`gateway`](./gateway) serves both `client` and `backend`, and takes care of
   connection routing. In particular, it:
   - Routes `/api/graphql` and `/api/graphiql` to `backend`.
   - Routes `/*` to `client`.
   - Serves a [`socket.io`](https://socket.io/) server at `/api/socket` to
-    relay RTC connection information between clients.j
+    relay RTC connection information between clients.
 - [`client`](./client) is a [`React`](https://reactjs.org/) frontend that
   exchanges audio with other clients using [`WebRTC`](https://webrtc.org/), and
-  applies 3D effects using the
-  [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
-  with data from `backend`.
+  applies 3D effects with the
+  [web audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+  using data from `backend`.
 
-## Testing
+## Advanced Usage
 
 ### Virtual Player
 
@@ -79,7 +81,7 @@ When added, the `VIRTUAL` player will spawn at your current player location,
 and make intermittent sounds so that you can test the platform's 3D audio
 capabilities during solo testing / development.
 
-### Backdoors
+### Overrides
 
 The following global variables can be used to alter the behavior on `client`,
 by typing them into the browser console.
@@ -100,11 +102,19 @@ _You must apply them before connecting in order for them to take effect._
   ZOOMCRAFT_MAX_DISTANCE = /* distance in blocks */
   ```
 
+- To change the rate at which player position data is updated:
+
+  ```js
+  ZOOMCRAFT_POLL_INTERVAL = /* duration in milliseconds */
+  ```
+
 ## TODO
 
-1. Allow user to set a roll-off modifier.
-2. "Rooms" that restrict communication to the players within an in-game
-   geofence.
+1. Create a UI for changing the maximum audible distance.
+2. Implement "rooms" that restrict communication to the players within an
+   in-game geofence.
 
 [drone]: https://ci.stevenxie.me/stevenxie/zoomcraft
 [drone-img]: https://ci.stevenxie.me/api/badges/stevenxie/zoomcraft/status.svg
+[version]: https://github.com/stevenxie/zoomcraft/tags
+[version-img]: https://img.shields.io/github/v/tag/stevenxie/zoomcraft?label=version&color=black&sort=semver

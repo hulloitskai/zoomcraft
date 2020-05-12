@@ -33,6 +33,7 @@ ReactDOM.render(
 
 if (typeof window !== "undefined") {
   window.ZOOMCRAFT_SKIP_VALIDATION = false;
+  window.ZOOMCRAFT_POLL_INTERVAL = 100;
   window.ZOOMCRAFT_MAX_DISTANCE = 25;
 }
 
