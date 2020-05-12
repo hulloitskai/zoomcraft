@@ -53,7 +53,7 @@ func main() {
 			players = minecraft.NewPlayerService(client, logger)
 
 			// Apply a cache layer to limit requests.
-			cache := minecraft.PlayerServiceCache{MaxAge: 250 * time.Millisecond}
+			cache := minecraft.PlayerServiceCache{MaxAge: 100 * time.Millisecond}
 			players = cache.Apply(players)
 			return nil
 		}(); err != nil {

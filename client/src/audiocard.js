@@ -152,7 +152,7 @@ const AudioCard = ({
   // Panner updates.
   useEffect(() => {
     if (!(panner && relation)) return;
-    const [x, y, z] = relation.map((x) => parseInt(x * 500));
+    const [x, y, z] = relation.map((x) => parseInt(x * 360));
     panner.setPosition(x, y, z);
   }, [panner, relation]);
 

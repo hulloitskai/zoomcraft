@@ -27,3 +27,7 @@ Create a virtual player to test the platform!
 When added, the `VIRTUAL` player will spawn at your current player location,
 and make intermittent sounds so that you can test the platform's 3D audio
 capabilities during solo testing / development.
+
+## TODO
+
+1. Allow user to set a fall-out modifier.

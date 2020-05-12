@@ -70,7 +70,7 @@ const Dashboard = ({ username, streams }) => {
 
   const { data, error } = useQuery(QUERY, {
     variables: { username: username },
-    pollInterval: 250,
+    pollInterval: 100,
   });
   if (error) console.error(`[dashboard] failed to load player data`, error);
   const players = keyBy(data?.players, "username");
