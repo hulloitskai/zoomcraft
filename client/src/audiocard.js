@@ -10,7 +10,7 @@ import Card from "./card";
 
 const StyledCard = styled(Card)`
   color: #ababab;
-  background: ${({ darker }) => (darker ? "black" : "#1E1E1E")};
+  background: ${({ darker }) => (darker ? "black" : "#2F2F2F")};
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
 
   code {
@@ -18,7 +18,7 @@ const StyledCard = styled(Card)`
     font-weight: 700;
 
     &.dimmed {
-      margin-top: 0.2rem;
+      margin-right: 02rem;
       color: #4e4e4e;
     }
   }
@@ -108,30 +108,42 @@ const AudioCard = ({
   onRemove,
 }) => {
   const audio = useRef(null);
+  const [output, setOutput] = useState(stream);
   const [panner, setPanner] = useState(null);
 
   useEffect(() => {
     if (!stream) return;
     if (source === SourceType.OUTGOING) return;
 
+    // HACK: Allow stream modification from peer.
+    {
+      let audio = new Audio();
+      audio.muted = true;
+      audio.srcObject = stream;
+      audio.addEventListener("canplaythrough", () => {
+        audio = null;
+      });
+      audio.srcObject = stream;
+    }
+
+    const AudioContext = window.AudioContext ?? window.webkitAudioContext;
+    /** @type {AudioContext} */
     const acx = new AudioContext();
-    const panner = new PannerNode(acx, {
-      panningModel: "HRTF",
-      distanceModel: "linear",
-      rolloffFactor: 1,
-    });
+
+    const panner = acx.createPanner();
+    panner.distanceModel = "linear";
+    panner.panningModel = "HRTF";
     setPanner(panner);
 
     const dst = acx.createMediaStreamDestination();
     const src = acx.createMediaStreamSource(stream);
-    src.connect(panner);
-    panner.connect(dst);
+    src.connect(panner).connect(dst);
+    setOutput(dst);
     audio.current.srcObject = dst.stream;
 
     // When cleaning up, disconnect everything.
     return () => {
       src.disconnect();
-      dst.disconnect();
       panner.disconnect();
       setPanner(null);
     };
@@ -156,11 +168,7 @@ const AudioCard = ({
   };
   return (
     <StyledCard darker={source === SourceType.OUTGOING}>
-      <audio
-        style={{ display: "none" }}
-        ref={audio}
-        autoPlay={source !== SourceType.OUTGOING}
-      />
+      <audio ref={audio} autoPlay={source !== SourceType.OUTGOING} />
       <Row>
         <Column>
           <code>{formatInfo(position)}</code>
@@ -177,7 +185,7 @@ const AudioCard = ({
         />
       </Row>
       <Expanded />
-      <StyledVisualizer stream={stream} color="#ababab" />
+      <StyledVisualizer stream={output} color="#ababab" />
       <Row>
         <h1>{username}</h1>
         <Expanded />

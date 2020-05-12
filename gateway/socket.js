@@ -32,25 +32,27 @@ module.exports = (server) => {
         socklog(socket).error(message);
         return reply({ error: message });
       }
-
-      // Tell participants about each other.
-      for (otherUsername in sockets) {
-        socket.emit("register", {
-          username: otherUsername,
-          initiate: true,
-        });
-        sockets[otherUsername].emit("register", {
-          username,
-          initiate: false,
-        });
-      }
+      reply({});
 
       // Register username.
       socket.username = username;
       sockets[username] = socket;
 
-      socklog(socket).log(`registered as '${username}'`);
-      reply({});
+      // Tell participants about each other.
+      setTimeout(() => {
+        for (otherUsername in sockets) {
+          if (otherUsername === username) continue;
+          socket.emit("register", {
+            username: otherUsername,
+            initiate: true,
+          });
+          sockets[otherUsername].emit("register", {
+            username,
+            initiate: false,
+          });
+        }
+        socklog(socket).log(`registered as '${username}'`);
+      }, 1000);
     });
 
     // Data relay.
@@ -62,7 +64,10 @@ module.exports = (server) => {
     // Upon disconnect, emit deregister event to all participants.
     socket.on("disconnect", () => {
       const { username } = socket;
-      if (!username) socklog(socket).error(`disconnected unregistered socket`);
+      if (!username) {
+        socklog(socket).error(`disconnected unregistered socket`);
+        return;
+      }
 
       delete sockets[username];
       io.emit("deregister", { username });

@@ -7,7 +7,7 @@ const Card = styled.div`
   width: 12rem;
   height: 12rem;
   padding: 0.9rem 0.8rem 0.8rem 0.8rem;
-  margin-right: 0.8rem;
+  margin: 0 0.8rem 0.8rem 0;
   box-sizing: border-box;
 
   position: relative;

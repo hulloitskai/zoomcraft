@@ -96,6 +96,7 @@ const Intro = ({ socket, onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setDisabled(true);
+    const { value: username } = input.current;
 
     // Check valid usernames.
     const { data } = await client.query({
@@ -103,7 +104,6 @@ const Intro = ({ socket, onSubmit }) => {
       fetchPolicy: "network-only",
     });
     const usernames = data.players.map((p) => p.username);
-    const { value: username } = input.current;
     if (!usernames.includes(username)) {
       setDisabled(false);
       return alert("No such player was found.");

@@ -20,8 +20,10 @@ class Visualizer extends Component {
     }
 
     // Create audio and canvas contexts.
-    this.ctx = canvas.current.getContext("2d");
+    const AudioContext = window.webkitAudioContext ?? window.AudioContext;
+    /** @type {AudioContext} */
     const acx = new AudioContext();
+    this.ctx = canvas.current.getContext("2d");
 
     // Create analyzer from audio context.
     const analyzer = acx.createAnalyser();
@@ -39,7 +41,8 @@ class Visualizer extends Component {
   }
 
   componentWillUnmount() {
-    this.source.disconnect(this.analyzer);
+    const { source } = this;
+    if (source) source.disconnect(this.analyzer);
   }
 
   update = () => {

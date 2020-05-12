@@ -60,6 +60,7 @@ func (l encodedLogger) Log(keyvals ...interface{}) error {
 		}
 		if k == messageKey {
 			message = fmt.Sprint(v)
+			continue
 		}
 
 		err := enc.EncodeKeyval(k, v)
@@ -73,9 +74,6 @@ func (l encodedLogger) Log(keyvals ...interface{}) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := enc.EncodeKeyvals(keyvals...); err != nil {
-		return err
 	}
 
 	// Add newline to the end of the buffer
