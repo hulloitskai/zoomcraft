@@ -1,6 +1,6 @@
 package graphql
 
-import "go.stevenxie.me/covidcraft/backend/minecraft"
+import "go.stevenxie.me/zoomcraft/backend/minecraft"
 
 // This file will not be regenerated automatically.
 //

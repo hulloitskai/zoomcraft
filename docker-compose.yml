@@ -15,9 +15,9 @@ services:
     volumes:
       - ./minecraft/server.properties:/data/server.properties
 
-  covidcraft:
+  zoomcraft:
     build: .
-    image: stevenxie/covidcraft:latest
+    image: stevenxie/zoomcraft:latest
     depends_on:
       - minecraft
     environment:

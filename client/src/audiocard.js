@@ -133,7 +133,7 @@ const AudioCard = ({
     const panner = acx.createPanner();
     panner.distanceModel = "linear";
     panner.panningModel = "HRTF";
-    panner.maxDistance = 3000; // 30 blocks
+    panner.maxDistance = 2500; // 25 blocks
     setPanner(panner);
 
     const dst = acx.createMediaStreamDestination();

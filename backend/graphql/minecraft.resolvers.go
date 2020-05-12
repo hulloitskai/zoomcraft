@@ -7,7 +7,7 @@ import (
 	"context"
 	"errors"
 
-	"go.stevenxie.me/covidcraft/backend/minecraft"
+	"go.stevenxie.me/zoomcraft/backend/minecraft"
 )
 
 func (r *queryResolver) Players(ctx context.Context) ([]*minecraft.Player, error) {

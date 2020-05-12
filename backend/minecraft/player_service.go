@@ -13,7 +13,7 @@ import (
 
 	"github.com/cockroachdb/errors"
 
-	"go.stevenxie.me/covidcraft/backend/util/logutil"
+	"go.stevenxie.me/zoomcraft/backend/util/logutil"
 )
 
 type playerService struct {

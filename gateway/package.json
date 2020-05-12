@@ -1,8 +1,8 @@
 {
-  "name": "covidcraft-gateway",
-  "description": "The CovidCraft gateway server.",
+  "name": "zoomcraft-gateway",
+  "description": "The Zoomcraft gateway server.",
   "main": "server.js",
-  "repository": "https://github.com/stevenxie/covidcraft",
+  "repository": "https://github.com/stevenxie/zoomcraft",
   "author": "Steven Xie <hello@stevenxie.me>",
   "license": "MIT",
   "private": true,

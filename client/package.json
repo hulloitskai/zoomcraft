@@ -1,7 +1,7 @@
 {
-  "name": "covidcraft-client",
-  "description": "The CovidCraft front-end.",
-  "repository": "https://github.com/stevenxie/covidcraft",
+  "name": "zoomcraft-client",
+  "description": "The Zoomcraft front-end.",
+  "repository": "https://github.com/stevenxie/zoomcraft",
   "author": "Steven Xie <hello@stevenxie.me>",
   "license": "MIT",
   "private": true,

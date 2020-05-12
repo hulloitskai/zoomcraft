@@ -14,10 +14,10 @@ import (
 	"github.com/gorcon/rcon"
 	"github.com/joho/godotenv"
 
-	"go.stevenxie.me/covidcraft/backend/graphql"
-	"go.stevenxie.me/covidcraft/backend/graphql/graphqlutil"
-	"go.stevenxie.me/covidcraft/backend/minecraft"
-	"go.stevenxie.me/covidcraft/backend/util/logutil"
+	"go.stevenxie.me/zoomcraft/backend/graphql"
+	"go.stevenxie.me/zoomcraft/backend/graphql/graphqlutil"
+	"go.stevenxie.me/zoomcraft/backend/minecraft"
+	"go.stevenxie.me/zoomcraft/backend/util/logutil"
 )
 
 func main() {

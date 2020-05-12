@@ -1,4 +1,4 @@
-module go.stevenxie.me/covidcraft/backend
+module go.stevenxie.me/zoomcraft/backend
 
 go 1.14
 

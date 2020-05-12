@@ -18,7 +18,7 @@ steps:
   - name: build
     image: stevenxie/kaniko-drone
     settings: &settings
-      repo: stevenxie/covidcraft
+      repo: stevenxie/zoomcraft
       tags:
         - |
           $([ $DRONE_BUILD_EVENT != tag ] && \

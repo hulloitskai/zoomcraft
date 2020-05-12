@@ -14,7 +14,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/introspection"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
-	"go.stevenxie.me/covidcraft/backend/minecraft"
+	"go.stevenxie.me/zoomcraft/backend/minecraft"
 )
 
 // region    ************************** generated!.gotpl **************************
@@ -317,7 +317,7 @@ func (ec *executionContext) _Player_position(ctx context.Context, field graphql.
 	}
 	res := resTmp.(minecraft.Coordinates)
 	fc.Result = res
-	return ec.marshalNCoordinates2goᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐCoordinates(ctx, field.Selections, res)
+	return ec.marshalNCoordinates2goᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐCoordinates(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Player_orientation(ctx context.Context, field graphql.CollectedField, obj *minecraft.Player) (ret graphql.Marshaler) {
@@ -351,7 +351,7 @@ func (ec *executionContext) _Player_orientation(ctx context.Context, field graph
 	}
 	res := resTmp.(minecraft.Orientation)
 	fc.Result = res
-	return ec.marshalNOrientation2goᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐOrientation(ctx, field.Selections, res)
+	return ec.marshalNOrientation2goᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐOrientation(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_players(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -385,7 +385,7 @@ func (ec *executionContext) _Query_players(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.([]*minecraft.Player)
 	fc.Result = res
-	return ec.marshalNPlayer2ᚕᚖgoᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐPlayer(ctx, field.Selections, res)
+	return ec.marshalNPlayer2ᚕᚖgoᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐPlayer(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_player(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -423,7 +423,7 @@ func (ec *executionContext) _Query_player(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*minecraft.Player)
 	fc.Result = res
-	return ec.marshalOPlayer2ᚖgoᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐPlayer(ctx, field.Selections, res)
+	return ec.marshalOPlayer2ᚖgoᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐPlayer(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1909,25 +1909,25 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNCoordinates2goᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐCoordinates(ctx context.Context, v interface{}) (minecraft.Coordinates, error) {
+func (ec *executionContext) unmarshalNCoordinates2goᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐCoordinates(ctx context.Context, v interface{}) (minecraft.Coordinates, error) {
 	var res minecraft.Coordinates
 	return res, res.UnmarshalGQL(v)
 }
 
-func (ec *executionContext) marshalNCoordinates2goᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐCoordinates(ctx context.Context, sel ast.SelectionSet, v minecraft.Coordinates) graphql.Marshaler {
+func (ec *executionContext) marshalNCoordinates2goᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐCoordinates(ctx context.Context, sel ast.SelectionSet, v minecraft.Coordinates) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNOrientation2goᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐOrientation(ctx context.Context, v interface{}) (minecraft.Orientation, error) {
+func (ec *executionContext) unmarshalNOrientation2goᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐOrientation(ctx context.Context, v interface{}) (minecraft.Orientation, error) {
 	var res minecraft.Orientation
 	return res, res.UnmarshalGQL(v)
 }
 
-func (ec *executionContext) marshalNOrientation2goᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐOrientation(ctx context.Context, sel ast.SelectionSet, v minecraft.Orientation) graphql.Marshaler {
+func (ec *executionContext) marshalNOrientation2goᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐOrientation(ctx context.Context, sel ast.SelectionSet, v minecraft.Orientation) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) marshalNPlayer2ᚕᚖgoᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐPlayer(ctx context.Context, sel ast.SelectionSet, v []*minecraft.Player) graphql.Marshaler {
+func (ec *executionContext) marshalNPlayer2ᚕᚖgoᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐPlayer(ctx context.Context, sel ast.SelectionSet, v []*minecraft.Player) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -1951,7 +1951,7 @@ func (ec *executionContext) marshalNPlayer2ᚕᚖgoᚗstevenxieᚗmeᚋcovidcraf
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOPlayer2ᚖgoᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐPlayer(ctx, sel, v[i])
+			ret[i] = ec.marshalOPlayer2ᚖgoᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐPlayer(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2227,11 +2227,11 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOPlayer2goᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐPlayer(ctx context.Context, sel ast.SelectionSet, v minecraft.Player) graphql.Marshaler {
+func (ec *executionContext) marshalOPlayer2goᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐPlayer(ctx context.Context, sel ast.SelectionSet, v minecraft.Player) graphql.Marshaler {
 	return ec._Player(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOPlayer2ᚖgoᚗstevenxieᚗmeᚋcovidcraftᚋbackendᚋminecraftᚐPlayer(ctx context.Context, sel ast.SelectionSet, v *minecraft.Player) graphql.Marshaler {
+func (ec *executionContext) marshalOPlayer2ᚖgoᚗstevenxieᚗmeᚋzoomcraftᚋbackendᚋminecraftᚐPlayer(ctx context.Context, sel ast.SelectionSet, v *minecraft.Player) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

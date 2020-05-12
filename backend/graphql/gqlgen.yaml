@@ -13,4 +13,4 @@ resolver:
 
 # TODO: Only autobind package graphql; all types should be declared there.
 autobind:
-  - go.stevenxie.me/covidcraft/backend/minecraft
+  - go.stevenxie.me/zoomcraft/backend/minecraft

@@ -123,7 +123,7 @@ const Intro = ({ socket, onSubmit }) => {
   return (
     <Container>
       <Menu>
-        <h1>COVIDCRAFT</h1>
+        <h1>ZOOMCRAFT</h1>
         <h2>virtual conferencing in minecraft</h2>
         <form onSubmit={handleSubmit}>
           <input
