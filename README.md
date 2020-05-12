@@ -2,6 +2,23 @@
 
 _Virtual conferencing with realistic audio presence, in Minecraft._
 
+> Working from home? Want to spice up your team meetings a bit?
+>
+> Why not do it—in Minecraft!
+
+<br />
+
+`covidcraft` is a single-container service that augments your Minecraft server
+with real-time audio conferencing superpowers using
+[WebRTC](https://webrtc.org). It works with any Minecraft server with RCON
+capabilities (vanilla servers since 1.0.0).
+
+It uses Web Audio spatialization APIs to map the audio from other players to
+their in-game position, in order to create a realistic virtual presence.
+
+[Check out a screencast of `covidcraft`'s 3D audio
+capabilties.](https://vimeo.com/417468259)
+
 ## Usage
 
 1. Run the Docker container on a server with access to the Minecraft game
@@ -31,3 +48,5 @@ capabilities during solo testing / development.
 ## TODO
 
 1. Allow user to set a roll-off modifier.
+2. "Rooms" that restrict communication to the players within an in-game
+   geofence.
