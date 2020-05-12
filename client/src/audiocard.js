@@ -133,6 +133,7 @@ const AudioCard = ({
     const panner = acx.createPanner();
     panner.distanceModel = "linear";
     panner.panningModel = "HRTF";
+    panner.maxDistance = 3000; // 30 blocks
     setPanner(panner);
 
     const dst = acx.createMediaStreamDestination();
@@ -152,7 +153,7 @@ const AudioCard = ({
   // Panner updates.
   useEffect(() => {
     if (!(panner && relation)) return;
-    const [x, y, z] = relation.map((x) => parseInt(x * 360));
+    const [x, y, z] = relation.map((x) => parseInt(x * 100));
     panner.setPosition(x, y, z);
   }, [panner, relation]);
 

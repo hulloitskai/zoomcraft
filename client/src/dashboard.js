@@ -1,4 +1,4 @@
-import React, { Component, useRef, useState, useEffect } from "react";
+import React, { Component, useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { gql, useQuery } from "@apollo/client";
 
@@ -32,8 +32,6 @@ const Cards = styled.div`
   flex-wrap: wrap;
 `;
 
-const ICE_SERVERS = [{ urls: ["stun:stun.l.google.com:19302"] }];
-
 const QUERY = gql`
   query($username: String!) {
     players {
@@ -47,23 +45,25 @@ const QUERY = gql`
 `;
 
 const Dashboard = ({ username, streams }) => {
-  const audio = useRef(null);
   const [virtualPosition, setVirtualPosition] = useState(null);
   const [virtualStream, setVirtualStream] = useState(null);
 
   // Whenever virtual position is updated, update the virtual stream.
   useEffect(() => {
     if (!virtualPosition) return;
-    audio.current.play();
+    const audio = new Audio(droplet);
+    audio.loop = true;
+    audio.play();
 
     const acx = new AudioContext();
     const dst = acx.createMediaStreamDestination();
-    const src = acx.createMediaElementSource(audio.current);
+    const src = acx.createMediaElementSource(audio);
     src.connect(dst);
 
     setVirtualStream(dst.stream);
     return () => {
       src.disconnect();
+      audio.remove();
       setVirtualStream(null);
     };
   }, [virtualPosition]);
@@ -90,7 +90,6 @@ const Dashboard = ({ username, streams }) => {
 
   return (
     <Container>
-      <audio ref={audio} src={droplet} autoPlay={false} loop />
       <h1>{isEmpty(streams) ? "LOADING..." : "PLAYERS"} </h1>
       <Cards>
         {map(streams, (stream, streamUsername) => {
@@ -152,7 +151,7 @@ class DashboardConnector extends Component {
           return;
         }
 
-        const conn = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+        const conn = new RTCPeerConnection();
         this.conns[otherUsername] = conn;
 
         // Handle remote ICE candidates.
@@ -173,7 +172,10 @@ class DashboardConnector extends Component {
             ...otherState,
             streams: { ...streams, [otherUsername]: stream },
           }));
-          console.log(`[conn(${otherUsername})] received stream`);
+          const { connectionState } = conn;
+          console.log(`[conn(${otherUsername})] received stream`, {
+            connectionState,
+          });
         });
 
         // Send local streams.

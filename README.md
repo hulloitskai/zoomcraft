@@ -30,4 +30,4 @@ capabilities during solo testing / development.
 
 ## TODO
 
-1. Allow user to set a fall-out modifier.
+1. Allow user to set a roll-off modifier.

@@ -10,7 +10,7 @@ module.exports = (server) => {
 
   const socklog = (socket) => {
     const { id, username } = socket;
-    const prefix = username ? `[socket(${username})` : `[socket/${id}]`;
+    const prefix = username ? `[socket(${username})]` : `[socket/${id}]`;
     return {
       log: (...args) => console.log(prefix, ...args),
       error: (...args) => console.error(prefix, ...args),
