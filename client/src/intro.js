@@ -99,14 +99,16 @@ const Intro = ({ socket, onSubmit }) => {
     const { value: username } = input.current;
 
     // Check valid usernames.
-    const { data } = await client.query({
-      query: PLAYER_USERNAMES,
-      fetchPolicy: "network-only",
-    });
-    const usernames = data.players.map((p) => p.username);
-    if (!usernames.includes(username)) {
-      setDisabled(false);
-      return alert("No such player was found.");
+    if (!window.ZOOMCRAFT_SKIP_VALIDATION) {
+      const { data } = await client.query({
+        query: PLAYER_USERNAMES,
+        fetchPolicy: "network-only",
+      });
+      const usernames = data.players.map((p) => p.username);
+      if (!usernames.includes(username)) {
+        setDisabled(false);
+        return alert("No such player was found.");
+      }
     }
 
     // Register with username.

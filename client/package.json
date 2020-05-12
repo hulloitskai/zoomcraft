@@ -41,6 +41,7 @@
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
     "react-scripts": "3.4.1",
+    "react-spinners": "^0.8.3",
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {

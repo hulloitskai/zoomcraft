@@ -1,8 +1,13 @@
 /** @jsx jsx */
+/** @jsxFrag Fragment */
+
+/* eslint-disable-next-line no-unused-vars */
+import { Fragment } from "react";
 import { jsx, css } from "@emotion/core";
 import { useRef, useState, useEffect } from "react";
 import styled from "@emotion/styled";
 
+import BounceLoader from "react-spinners/BounceLoader";
 import { Mic, MicOff, Volume1, VolumeX, Trash } from "react-feather";
 
 import Visualizer from "./visualizer";
@@ -46,6 +51,18 @@ const StyledVisualizer = styled(Visualizer)`
 
 const Clickable = styled.span`
   cursor: pointer;
+`;
+
+const LoaderContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const SourceType = {
@@ -133,7 +150,8 @@ const AudioCard = ({
     const panner = acx.createPanner();
     panner.distanceModel = "linear";
     panner.panningModel = "HRTF";
-    panner.maxDistance = 2500; // 25 blocks
+    const maxDistanceBlocks = window.ZOOMCRAFT_MAX_DISTANCE ?? 25;
+    panner.maxDistance = maxDistanceBlocks * 100;
     setPanner(panner);
 
     const dst = acx.createMediaStreamDestination();
@@ -157,10 +175,10 @@ const AudioCard = ({
     panner.setPosition(x, y, z);
   }, [panner, relation]);
 
-  const [track] = stream.getAudioTracks();
+  const [track] = stream?.getAudioTracks() ?? [];
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
-    track.enabled = !disabled;
+    if (track) track.enabled = !disabled;
   }, [track, disabled]);
 
   const formatInfo = (info, unit = "") => {
@@ -170,23 +188,38 @@ const AudioCard = ({
   return (
     <StyledCard darker={source === SourceType.OUTGOING}>
       <audio ref={audio} autoPlay={source !== SourceType.OUTGOING} />
-      <Row>
-        <Column>
-          <code>{formatInfo(position)}</code>
-          {relation && <code className="dimmed">{formatInfo(relation)}</code>}
-          {orientation && (
-            <code className="dimmed">{formatInfo(orientation, "°")}</code>
-          )}
-        </Column>
-        <Expanded />
-        <SoundSwitch
-          source={source}
-          disabled={disabled}
-          onClick={() => setDisabled(!disabled)}
-        />
-      </Row>
-      <Expanded />
-      <StyledVisualizer stream={output} color="#ababab" />
+      {stream && (
+        <>
+          <Row>
+            <Column>
+              <code>{formatInfo(position)}</code>
+              {relation && (
+                <code className="dimmed">{formatInfo(relation)}</code>
+              )}
+              {orientation && (
+                <code className="dimmed">{formatInfo(orientation, "°")}</code>
+              )}
+            </Column>
+            <Expanded />
+            <SoundSwitch
+              source={source}
+              disabled={disabled}
+              onClick={() => setDisabled(!disabled)}
+            />
+          </Row>
+          <Expanded />
+          <StyledVisualizer stream={output ?? stream} color="#ababab" />
+        </>
+      )}
+      {!stream && (
+        <>
+          <LoaderContainer>
+            <BounceLoader color="#36d7b7" />
+          </LoaderContainer>
+          <code>connecting</code>
+          <Expanded />
+        </>
+      )}
       <Row>
         <h1>{username}</h1>
         <Expanded />

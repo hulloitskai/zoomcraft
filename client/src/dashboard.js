@@ -92,18 +92,18 @@ const Dashboard = ({ username, streams }) => {
     <Container>
       <h1>{isEmpty(streams) ? "LOADING..." : "PLAYERS"} </h1>
       <Cards>
-        {map(streams, (stream, streamUsername) => {
-          const streamPlayer = get(players, streamUsername, {});
-          const { position: streamPosition } = streamPlayer;
-          const own = streamUsername === username;
+        {map(streams, (stream, targetUsername) => {
+          const targetPlayer = get(players, targetUsername, {});
+          const { position: targetPosition } = targetPlayer;
+          const own = targetUsername === username;
           return (
             <AudioCard
-              key={streamUsername}
+              key={targetUsername}
               source={own ? SourceType.OUTGOING : SourceType.INCOMING}
               stream={stream}
-              username={streamUsername}
-              position={streamPosition}
-              relation={own ? undefined : relation(position, streamPosition)}
+              username={targetUsername}
+              position={targetPosition}
+              relation={own ? undefined : relation(position, targetPosition)}
               orientation={own ? orientation : undefined}
             />
           );
@@ -125,6 +125,18 @@ const Dashboard = ({ username, streams }) => {
   );
 };
 
+const ICE_SERVERS = [
+  {
+    urls: [
+      "stun:stun.l.google.com:19302",
+      "stun:stun1.l.google.com:19302",
+      "stun:stun2.l.google.com:19302",
+      "stun:stun3.l.google.com:19302",
+      "stun:stun4.l.google.com:19302",
+    ],
+  },
+];
+
 class DashboardConnector extends Component {
   constructor(props) {
     super(props);
@@ -144,85 +156,126 @@ class DashboardConnector extends Component {
     });
 
     // Handle registration events.
-    socket.on("register", async ({ username: otherUsername, initiate }) => {
+    socket.on("register", async ({ username: targetUsername, initiate }) => {
       try {
-        if (otherUsername in this.conns) {
-          console.warn(`[socket] already connected to '${otherUsername}'`);
+        if (targetUsername in this.conns) {
+          console.warn(`[socket] already connected to '${targetUsername}'`);
           return;
         }
 
-        const conn = new RTCPeerConnection();
-        this.conns[otherUsername] = conn;
+        const conn = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+        this.conns[targetUsername] = conn;
+        this.setState(({ streams, ...otherState }) => ({
+          streams: { ...streams, [targetUsername]: null },
+          ...otherState,
+        }));
+
+        const negotiate = async () => {
+          console.log(`[conn(${targetUsername})] negotiating connection...`);
+          const desc = await conn.createOffer({
+            offerToReceiveAudio: true,
+            iceRestart: true,
+          });
+          await conn.setLocalDescription(desc);
+          socket.emit("data", {
+            recipient: targetUsername,
+            payload: { description: desc },
+          });
+        };
 
         // Handle remote ICE candidates.
         conn.addEventListener("icecandidate", ({ candidate }) => {
           if (!candidate) return;
-          console.log(`[conn(${otherUsername})] received ICE candidate`);
+          console.log(`[conn(${targetUsername})] received ICE candidate`);
           socket.emit("data", {
-            recipient: otherUsername,
+            recipient: targetUsername,
             payload: {
               candidate: candidate.toJSON(),
             },
           });
         });
 
-        // Handle remote streamms.
-        conn.addEventListener("addstream", ({ stream }) => {
+        const updateStream = () => {
+          const { stream } = conn;
           this.setState(({ streams, ...otherState }) => ({
             ...otherState,
-            streams: { ...streams, [otherUsername]: stream },
+            streams: { ...streams, [targetUsername]: stream },
           }));
+          console.log(`[conn(${targetUsername})] updated stream`);
+        };
+
+        // Handle remote tracks.
+        conn.addEventListener("track", ({ streams }) => {
           const { connectionState } = conn;
-          console.log(`[conn(${otherUsername})] received stream`, {
-            connectionState,
-          });
+          const [stream] = streams;
+          conn.stream = stream;
+
+          if (connectionState === "connected") updateStream();
+          console.log(`[conn(${targetUsername})] received tracks`);
         });
 
-        // Send local streams.
+        conn.addEventListener("connectionstatechange", () => {
+          const { connectionState } = conn;
+          console.log(
+            `[conn(${targetUsername})] connection state is: ${connectionState}`
+          );
+          switch (connectionState) {
+            case "connected":
+              updateStream();
+              break;
+            case "failed":
+              negotiate();
+              break;
+            default:
+          }
+        });
+
+        // Send local tracks.
         {
           const { streams } = this.state;
           if (username in streams) {
-            conn.addStream(streams[username]);
-            console.log(`[conn] sent stream to '${otherUsername}'`);
+            const stream = streams[username];
+            stream.getTracks().forEach((track) => {
+              conn.addTrack(track, stream);
+            });
+            console.log(`[conn(${targetUsername})] sent tracks`);
           }
         }
 
         // Create WebRTC offer, if initiator.
-        if (initiate) {
-          const desc = await conn.createOffer({ offerToReceiveAudio: true });
-          await conn.setLocalDescription(desc);
-          socket.emit("data", {
-            recipient: otherUsername,
-            payload: { description: desc },
-          });
-        }
-
-        console.log(`[socket] connected to '${otherUsername}'`);
+        if (initiate) negotiate();
+        console.log(`[socket] connected to '${targetUsername}'`);
       } catch (error) {
         console.error(
-          `[socket] failed to connect to '${otherUsername}:`,
+          `[socket] failed to connect to '${targetUsername}:`,
           error
         );
       }
     });
 
-    socket.on("deregister", async ({ username: otherUsername }) => {
+    socket.on("deregister", async ({ username: targetUsername }) => {
       try {
         /** @type {RTCPeerConnection} */
-        if (!(otherUsername in this.conns)) throw new Error(`unknown username`);
+        if (!(targetUsername in this.conns))
+          throw new Error(`unknown username`);
 
-        const { [otherUsername]: conn, ...otherConns } = this.conns;
+        const { [targetUsername]: conn, ...otherConns } = this.conns;
         conn.close();
         this.conns = otherConns;
 
-        const { [otherUsername]: stream, ...otherStreams } = this.state.streams;
-        stream.getAudioTracks().forEach((track) => track.stop());
-        this.setState({ streams: otherStreams });
+        const {
+          [targetUsername]: stream,
+          ...otherStreams
+        } = this.state.streams;
+        if (stream) {
+          stream.getAudioTracks().forEach((track) => track.stop());
+          this.setState({ streams: otherStreams });
+        }
 
-        console.log(`[socket] registered '${otherUsername}'`);
+        console.log(`[socket] deregistered '${targetUsername}'`);
       } catch (error) {
         console.error(
-          `[socket]: failed to deregister '${otherUsername}':`,
+          `[socket]: failed to deregister '${targetUsername}':`,
           error
         );
       }
@@ -231,7 +284,6 @@ class DashboardConnector extends Component {
     socket.on("data", async ({ sender, payload }) => {
       try {
         if (!(sender in this.conns)) throw new Error(`unknown username`);
-
         /** @type {RTCPeerConnection} */
         const senderConn = this.conns[sender];
 
@@ -248,9 +300,13 @@ class DashboardConnector extends Component {
             });
           }
           console.log(`[socket] set session description from '${sender}'`);
-        } else if (candidate) {
+          return;
+        }
+
+        if (candidate) {
           senderConn.addIceCandidate(new RTCIceCandidate(candidate));
           console.log(`[socket] set ICE candidate from '${sender}'`);
+          return;
         }
       } catch (error) {
         console.error(`[socket]: handle data from '${sender}':`, error);
@@ -264,7 +320,11 @@ class DashboardConnector extends Component {
         streams: { [username]: stream, ...streams },
         ...otherState,
       }));
-      forEach(this.conns, (c) => c.addStream(stream));
+      forEach(this.conns, (conn) => {
+        stream.getTracks().forEach((track) => {
+          conn.addTrack(track, stream);
+        });
+      });
       console.info(`[audio] configured and streaming`);
     } catch (error) {
       alert("Failed to configure audio.");

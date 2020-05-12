@@ -9,7 +9,6 @@ steps:
       - git describe --tags 2> /dev/null | cut -c 2- > /info/version
       - git rev-parse HEAD 2> /dev/null > /info/commit
       - git rev-parse --abbrev-ref HEAD 2> /dev/null > /info/branch
-      - head -1 < go.mod | awk '{print $2}' 2> /dev/null > /info/module
       - tail -n +1 /info/*
     volumes:
       - name: info
