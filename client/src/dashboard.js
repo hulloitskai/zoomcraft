@@ -171,7 +171,7 @@ class DashboardConnector extends Component {
           ...otherState,
         }));
 
-        const negotiate = async () => {
+        async function negotiate() {
           console.log(`[conn(${targetUsername})] negotiating connection...`);
           const desc = await conn.createOffer({
             offerToReceiveAudio: true,
@@ -182,7 +182,13 @@ class DashboardConnector extends Component {
             recipient: targetUsername,
             payload: { description: desc },
           });
-        };
+
+          // Time-out the negotiation after 2000 ms, and try again.
+          setTimeout(() => {
+            const { connectionState } = conn;
+            if (connectionState !== "connected") negotiate();
+          }, window.ZOOMCRAFT_NEGOTIATION_TIMEOUT ?? 2000);
+        }
 
         // Handle remote ICE candidates.
         conn.addEventListener("icecandidate", ({ candidate }) => {
