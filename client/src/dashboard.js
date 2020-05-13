@@ -163,7 +163,8 @@ class DashboardConnector extends Component {
           return;
         }
 
-        const conn = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+        const iceServers = window.ZOOMCRAFT_ICE_SERVERS ?? ICE_SERVERS;
+        const conn = new RTCPeerConnection({ iceServers });
         this.conns[targetUsername] = conn;
         this.setState(({ streams, ...otherState }) => ({
           streams: { ...streams, [targetUsername]: null },

@@ -19,7 +19,7 @@ to map the audio from other players to their in-game position, in order to
 create a realistic virtual presence.
 
 [Check out a screencast of `zoomcraft`'s 3D audio
-capabilties.](https://vimeo.com/417468259) _Use headphones! (or make sure your
+capabilties.](https://vimeo.com/417864067) _Use headphones! (or make sure your
 speakers support stereo audio)._
 
 ## Usage
@@ -38,6 +38,12 @@ speakers support stereo audio)._
 2. Join the Minecraft server.
 3. Visit `http://localhost:8080` and enter your player username to begin
    conferencing.
+4. Expose port `8080` on a public address to allow other players to
+   connect to `zoomcraft`. Have fun!
+
+_If you experience any connection issues or other bugs, please
+[submit an issue](https://github.com/stevenxie/zoomcraft/issues/new/choose) so
+that I can look into it!_
 
 ### Caveats
 
@@ -50,6 +56,13 @@ speakers support stereo audio)._
   not work). If this happens, change your computer's audio input source to be
   something other than the bluetooth headphones (e.g. your computer's internal
   speakers).
+
+- Some Chrome browser extensions may interfere with the WebRTC connection
+  negotiation process. Run `zoomcraft` in an incognito window if you
+  encounter connection issues.
+
+- The first connection attempt sometimes takes much longer than future attempts.
+  Be prepared for other players to be `connecting` for up to 30 seconds.
 
 ## Architecture
 
@@ -106,6 +119,17 @@ _You must apply them before connecting in order for them to take effect._
 
   ```js
   ZOOMCRAFT_POLL_INTERVAL = /* duration in milliseconds */
+  ```
+
+- To use custom ICE servers for WebRTC:
+  ```js
+  ZOOMCRAFT_ICE_SERVERS = [
+    {
+      urls: [
+        /* ... */
+      ],
+    },
+  ];
   ```
 
 ## TODO

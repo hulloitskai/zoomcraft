@@ -35,6 +35,7 @@ if (typeof window !== "undefined") {
   window.ZOOMCRAFT_SKIP_VALIDATION = false;
   window.ZOOMCRAFT_POLL_INTERVAL = 100;
   window.ZOOMCRAFT_MAX_DISTANCE = 25;
+  window.ZOOMCRAFT_ICE_SERVERS = undefined;
 }
 
 // If you want your app to work offline and load faster, you can change
