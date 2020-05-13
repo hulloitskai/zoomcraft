@@ -233,9 +233,8 @@ class DashboardConnector extends Component {
 
         // Send local tracks.
         {
-          const { streams } = this.state;
-          if (username in streams) {
-            const stream = streams[username];
+          const stream = this.state.streams[username];
+          if (stream) {
             stream.getTracks().forEach((track) => {
               conn.addTrack(track, stream);
             });
@@ -320,18 +319,33 @@ class DashboardConnector extends Component {
     try {
       const constraints = { audio: true, video: false };
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      stream.getAudioTracks().forEach((track) => {});
 
+      // Apply constraints to audio tracks.
+      {
+        const promises = stream.getAudioTracks().map((track) => {
+          return track.applyConstraints({
+            noiseSuppression: true,
+            echoCancellation: true,
+            channelCount: 2,
+          });
+        });
+        await Promise.all(promises);
+      }
+      console.info(`[audio] configured and streaming`);
+
+      // Set own media stream.
       this.setState(({ streams, ...otherState }) => ({
         streams: { [username]: stream, ...streams },
         ...otherState,
       }));
-      forEach(this.conns, (conn) => {
+
+      // Send tracks to all existing connections.
+      forEach(this.conns, (conn, targetUsername) => {
         stream.getTracks().forEach((track) => {
           conn.addTrack(track, stream);
         });
+        console.log(`[conn(${targetUsername})] sent tracks (late)`);
       });
-      console.info(`[audio] configured and streaming`);
     } catch (error) {
       alert("Failed to configure audio.");
       console.error(`[audio]`, error);

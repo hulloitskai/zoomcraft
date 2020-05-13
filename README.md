@@ -1,18 +1,21 @@
 # zoomcraft
 
-_Augmented reality voice conferencing, in Minecraft._
+_Realistic audio presence, in Minecraft._
 
-[![version][version-img]][version]
-[![drone][drone-img]][drone]
+[![git gag][tag-img]][tag]
+[![drone ci][drone-img]][drone]
 
-> Working from home? Want to spice up your team meetings a bit?
+> Are you working from home? Spending all day on Zoom calls?
 >
-> Why not do it—in Minecraft!
+> Missing that presence that you feel when everybody's working in the same
+> office?
+>
+> Well, why not recapture that feeling by bringing everybody together—in
+> Minecraft!
 
 `zoomcraft` is a single-container service that augments your Minecraft server
-with real-time audio conferencing superpowers using
-[WebRTC](https://webrtc.org). It works with any Minecraft server with RCON
-capabilities (vanilla servers since 1.0.0).
+with real-time 3D audio presence over [WebRTC](https://webrtc.org). It works
+with any Minecraft server with RCON capabilities (vanilla servers since 1.0.0).
 
 It uses [web audio spatialization APIs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Web_audio_spatialization_basics)
 to map the audio from other players to their in-game position, in order to
@@ -147,5 +150,5 @@ _You must apply them before connecting in order for them to take effect._
 
 [drone]: https://ci.stevenxie.me/stevenxie/zoomcraft
 [drone-img]: https://ci.stevenxie.me/api/badges/stevenxie/zoomcraft/status.svg
-[version]: https://github.com/stevenxie/zoomcraft/tags
-[version-img]: https://img.shields.io/github/v/tag/stevenxie/zoomcraft?label=version&color=black&sort=semver
+[tag]: https://github.com/stevenxie/zoomcraft/tags
+[tag-img]: https://img.shields.io/github/v/tag/stevenxie/zoomcraft?label=latest&color=black&sort=semver
