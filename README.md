@@ -27,7 +27,7 @@ speakers support stereo audio)._
 
 ## Usage
 
-1. Run the Docker container on a server with access to the Minecraft game
+1. Run the Docker image on a server with access to the Minecraft game
    server (vanilla / any variant with RCON access).
 
    ```bash
@@ -44,9 +44,9 @@ speakers support stereo audio)._
 4. Expose port `8080` on a public address to allow other players to
    connect to `zoomcraft`. Have fun!
 
-_If you experience any connection issues or other bugs, please
-[submit an issue](https://github.com/stevenxie/zoomcraft/issues/new/choose) so
-that I can look into it!_
+> If you experience any connection issues or other bugs, please
+> [submit an issue](https://github.com/stevenxie/zoomcraft/issues/new/choose) so
+> that I can look into it!
 
 ### Caveats
 
@@ -64,8 +64,11 @@ that I can look into it!_
   negotiation process. Run `zoomcraft` in an incognito window if you
   encounter connection issues.
 
-- The first connection attempt sometimes takes much longer than future attempts.
-  Be prepared for other players to be `connecting` for up to 30 seconds.
+- ~~The first connection attempt sometimes takes much longer than future
+  attempts. Be prepared for other players to be `connecting` for up to 30
+  seconds.~~ This should be a lot better starting from `v1.1.1` due to the
+  implementation of WebRTC negotiation timeouts. Still happening?
+  [File an issue!](https://github.com/stevenxie/zoomcraft/issues/new/choose)
 
 ## Architecture
 
@@ -74,14 +77,24 @@ that I can look into it!_
 - [`backend`](./backend) is responsible for querying the Minecraft server for
   world and player data using [RCON](https://wiki.vg/RCON). It exposes this
   information over a [`GraphQL`](https://graphql.org/) API.
+
+  > Interested in forking `zoomcraft` to support another game? This is the
+  > code that you should probably change!
+  >
+  > In particular, check out
+  > [`backend/minecraft/player_service.go`](./backend/minecraft/player_service.go)
+  > for an implementation of getting game data through `RCON`, and
+  > [`backend/graphql/minecraft.resolvers.go`](./backend/graphql/minecraft.resolvers.go)
+  > to see how that service is called from the `GraphQL` layer.
+
 - [`gateway`](./gateway) serves both `client` and `backend`, and takes care of
   connection routing. In particular, it:
   - Routes `/api/graphql` and `/api/graphiql` to `backend`.
   - Routes `/*` to `client`.
   - Serves a [`socket.io`](https://socket.io/) server at `/api/socket` to
-    relay RTC connection information between clients.
-- [`client`](./client) is a [`React`](https://reactjs.org/) frontend that
-  exchanges audio with other clients using [`WebRTC`](https://webrtc.org/), and
+    relay WebRTC connection information between clients.
+- [`client`](./client) is a [React](https://reactjs.org/) frontend that
+  exchanges audio with other clients using [WebRTC](https://webrtc.org/), and
   applies 3D effects with the
   [web audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
   using data from `backend`.
@@ -97,7 +110,7 @@ When added, the `VIRTUAL` player will spawn at your current player location,
 and make intermittent sounds so that you can test the platform's 3D audio
 capabilities during solo testing / development.
 
-### Overrides
+### Client Overrides
 
 The following global variables can be used to alter the behavior on `client`,
 by typing them into the browser console.
