@@ -185,10 +185,16 @@ class DashboardConnector extends Component {
           });
 
           // Time-out the negotiation after 2000 ms, and try again.
+          const timeout = window.ZOOMCRAFT_NEGOTIATION_TIMEOUT ?? 2000;
           setTimeout(() => {
             const { connectionState } = conn;
-            if (connectionState !== "connected") negotiate();
-          }, window.ZOOMCRAFT_NEGOTIATION_TIMEOUT ?? 2000);
+            if (connectionState !== "connected") {
+              console.log(
+                `[conn(${targetUsername}) negotiation timed out (${timeout}ms), retrying...`
+              );
+              negotiate();
+            }
+          }, timeout);
         }
 
         // Handle remote ICE candidates.

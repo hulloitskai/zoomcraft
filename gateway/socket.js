@@ -13,6 +13,7 @@ module.exports = (server) => {
     const prefix = username ? `[socket(${username})]` : `[socket/${id}]`;
     return {
       log: (...args) => console.log(prefix, ...args),
+      warn: (...args) => console.warn(prefix, ...args),
       error: (...args) => console.error(prefix, ...args),
     };
   };
@@ -58,7 +59,11 @@ module.exports = (server) => {
     // Data relay.
     socket.on("data", ({ recipient, payload }) => {
       const { username } = socket;
-      sockets[recipient].emit("data", { sender: username, payload });
+      if (!sockets[recipient]) {
+        sockLog(socket).warn(`received data after disconnect`);
+        return;
+      }
+      sockets[recipient]?.emit("data", { sender: username, payload });
     });
 
     // Upon disconnect, emit deregister event to all participants.
