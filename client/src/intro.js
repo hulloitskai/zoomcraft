@@ -97,6 +97,7 @@ const Intro = ({ socket, onSubmit }) => {
     event.preventDefault();
     setDisabled(true);
     const { value: username } = input.current;
+    if (!username) return alert("Please enter a username.");
 
     // Check valid usernames.
     if (!window.ZOOMCRAFT_SKIP_VALIDATION) {
@@ -133,6 +134,7 @@ const Intro = ({ socket, onSubmit }) => {
             placeholder="player username"
             text="text"
             ref={input}
+            required
           />
           <input
             className="connect"

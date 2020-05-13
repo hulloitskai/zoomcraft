@@ -122,6 +122,7 @@ _You must apply them before connecting in order for them to take effect._
   ```
 
 - To use custom ICE servers for WebRTC:
+
   ```js
   ZOOMCRAFT_ICE_SERVERS = [
     {
@@ -130,6 +131,12 @@ _You must apply them before connecting in order for them to take effect._
       ],
     },
   ];
+  ```
+
+- To change the WebRTC negotiation timeout:
+
+  ```js
+  ZOOMCRAFT_NEGOTIATION_TIMEOUT = /* duration in milliseconds */
   ```
 
 ## TODO

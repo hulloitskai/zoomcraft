@@ -171,6 +171,7 @@ class DashboardConnector extends Component {
           ...otherState,
         }));
 
+        // Create and send WebRTC offer.
         async function negotiate() {
           console.log(`[conn(${targetUsername})] negotiating connection...`);
           const desc = await conn.createOffer({
@@ -221,20 +222,13 @@ class DashboardConnector extends Component {
           console.log(`[conn(${targetUsername})] received tracks`);
         });
 
+        // Update streams when successfully connected.
         conn.addEventListener("connectionstatechange", () => {
           const { connectionState } = conn;
           console.log(
             `[conn(${targetUsername})] connection state is: ${connectionState}`
           );
-          switch (connectionState) {
-            case "connected":
-              updateStream();
-              break;
-            case "failed":
-              negotiate();
-              break;
-            default:
-          }
+          if (connectionState === "connected") updateStream();
         });
 
         // Send local tracks.
@@ -249,8 +243,13 @@ class DashboardConnector extends Component {
           }
         }
 
-        // Create WebRTC offer, if initiator.
-        if (initiate) negotiate();
+        // Handle negotiations, if initiator.
+        if (initiate) {
+          conn.addEventListener("negotiationneeded", () => {
+            console.log(`[conn(${targetUsername})] requires negotiation`);
+            negotiate();
+          });
+        }
         console.log(`[socket] connected to '${targetUsername}'`);
       } catch (error) {
         console.error(
