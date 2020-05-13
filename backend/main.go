@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/go-kit/kit/log"
@@ -28,6 +29,11 @@ func main() {
 		logger := logutil.NewLogger(log.NewSyncWriter(os.Stdout))
 		logger = logutil.WithComponent(logger, "backend")
 		logger = level.NewInjector(logger, level.DebugValue())
+
+		// Set log level.
+		if !isTruthy(os.Getenv("BACKEND_DEBUG")) {
+			logger = level.NewFilter(logger, level.AllowInfo())
+		}
 
 		// Create Minecraft client.
 		var client *minecraft.Client
@@ -99,4 +105,14 @@ func getEnv(key string, fallback string) string {
 		return v
 	}
 	return fallback
+}
+
+func isTruthy(v string) bool {
+	v = strings.TrimSpace((v))
+	switch v {
+	case "true", "t", "1":
+		return true
+	default:
+		return false
+	}
 }
