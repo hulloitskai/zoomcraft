@@ -15,10 +15,7 @@ require (
 	github.com/gorcon/rcon v1.0.0
 	github.com/joho/godotenv v1.3.0
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
-	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/vektah/gqlparser/v2 v2.0.1
-	go.mongodb.org/mongo-driver v1.3.3
+	go.mongodb.org/mongo-driver v1.5.1
 	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
-	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
